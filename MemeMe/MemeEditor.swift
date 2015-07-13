@@ -16,9 +16,6 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     @IBOutlet weak var textLineBottom: UITextField!
     var keyboardIsHidden = true
     var keyboardHeight: CGFloat = 0
-    var editingTopLine = false
-    var editingBottomLine = false
-    var viewIsAdjustedUp = false
     
     // MARK: - UIViewController
     override func viewDidLoad() {
@@ -35,17 +32,16 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         textLineBottom.hidden = true
         textLineTop.delegate = self
         textLineBottom.delegate = self
-        textLineTop.textAlignment = NSTextAlignment.Center
-        textLineBottom.textAlignment = NSTextAlignment.Center
+        textLineTop.textAlignment = .Center
+        textLineBottom.textAlignment = .Center
         textLineTop.adjustsFontSizeToFitWidth = true
         textLineBottom.adjustsFontSizeToFitWidth = true
-        textLineTop.autocapitalizationType = UITextAutocapitalizationType.AllCharacters
-        textLineBottom.autocapitalizationType = UITextAutocapitalizationType.AllCharacters
+        textLineTop.autocapitalizationType = .AllCharacters
+        textLineBottom.autocapitalizationType = .AllCharacters
     }
     
     override func viewWillAppear(animated: Bool) {
         self.subscribeToKeyboardNotifications()
-        editingTopLine = false
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
     }
     
@@ -115,10 +111,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     func keyboardWillShow(notification: NSNotification) {
         if keyboardIsHidden && textLineBottom.isFirstResponder() {
-            if !viewIsAdjustedUp {
-                self.view.frame.origin.y -= getKeyboardHeight(notification)
-                viewIsAdjustedUp = true
-            }
+            self.view.frame.origin.y -= getKeyboardHeight(notification)
         }
         keyboardIsHidden = false
         keyboardHeight = getKeyboardHeight(notification)
@@ -126,10 +119,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     func keyboardWillHide(notification: NSNotification) {
         if !keyboardIsHidden && textLineBottom.isFirstResponder() {
-            if viewIsAdjustedUp {
-                self.view.frame.origin.y += getKeyboardHeight(notification)
-                viewIsAdjustedUp = false
-            }
+            self.view.frame.origin.y += getKeyboardHeight(notification)
         }
         keyboardIsHidden = true
         keyboardHeight = 0
@@ -144,25 +134,6 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
-    }
-    
-    func textFieldDidBeginEditing(textField: UITextField) {
-        if textField === textLineTop {
-            if editingBottomLine && viewIsAdjustedUp {
-                self.view.frame.origin.y += keyboardHeight
-                viewIsAdjustedUp = false
-            }
-            editingTopLine = true
-            editingBottomLine = false
-        }
-        if textField === textLineBottom {
-            if editingTopLine && !viewIsAdjustedUp {
-                self.view.frame.origin.y -= keyboardHeight
-                viewIsAdjustedUp = true
-            }
-            editingTopLine = false
-            editingBottomLine = true
-        }
     }
 }
 
