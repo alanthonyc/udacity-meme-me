@@ -39,6 +39,8 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         textLineBottom.textAlignment = NSTextAlignment.Center
         textLineTop.adjustsFontSizeToFitWidth = true
         textLineBottom.adjustsFontSizeToFitWidth = true
+        textLineTop.autocapitalizationType = UITextAutocapitalizationType.AllCharacters
+        textLineBottom.autocapitalizationType = UITextAutocapitalizationType.AllCharacters
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -115,9 +117,10 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         if keyboardIsHidden && textLineBottom.isFirstResponder() {
             if !viewIsAdjustedUp {
                 self.view.frame.origin.y -= getKeyboardHeight(notification)
+                viewIsAdjustedUp = true
             }
-            keyboardIsHidden = false
         }
+        keyboardIsHidden = false
         keyboardHeight = getKeyboardHeight(notification)
     }
     
@@ -125,10 +128,11 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         if !keyboardIsHidden && textLineBottom.isFirstResponder() {
             if viewIsAdjustedUp {
                 self.view.frame.origin.y += getKeyboardHeight(notification)
+                viewIsAdjustedUp = false
             }
-            keyboardIsHidden = true
-            keyboardHeight = 0
         }
+        keyboardIsHidden = true
+        keyboardHeight = 0
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
