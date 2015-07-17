@@ -12,32 +12,27 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
 
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var textLineTop: UITextField!
-    @IBOutlet weak var textLineBottom: UITextField!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var memeView: UIView!
+    @IBOutlet weak var textLineTop: MemeLineLabel!
+    @IBOutlet weak var textLineBottom: MemeLineLabel!
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var navBar: UINavigationBar!
+    
+    var topLineEdited = false
+    var bottomLineEdited = false
     var keyboardIsHidden = true
-    var keyboardHeight: CGFloat = 0
     
     // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        let memeTextAttributes = [
-            NSStrokeColorAttributeName: UIColor.blackColor(),
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
-            NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 56)!,
-            NSStrokeWidthAttributeName: -3.0
-        ]
-        textLineTop.defaultTextAttributes = memeTextAttributes
-        textLineBottom.defaultTextAttributes = memeTextAttributes
-        textLineTop.hidden = true
-        textLineBottom.hidden = true
+        textLineTop.setupView(56.0)
+        textLineBottom.setupView(56.0)
         textLineTop.delegate = self
         textLineBottom.delegate = self
-        textLineTop.textAlignment = .Center
-        textLineBottom.textAlignment = .Center
-        textLineTop.adjustsFontSizeToFitWidth = true
-        textLineBottom.adjustsFontSizeToFitWidth = true
-        textLineTop.autocapitalizationType = .AllCharacters
-        textLineBottom.autocapitalizationType = .AllCharacters
+        textLineTop.hidden = true
+        textLineBottom.hidden = true
+        shareButton.enabled = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -91,6 +86,9 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         self.dismissViewControllerAnimated(true, completion: nil)
         textLineTop.hidden = false
         textLineBottom.hidden = false
+        topLineEdited = false
+        bottomLineEdited = false
+        shareButton.enabled = true
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -114,7 +112,6 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
             self.view.frame.origin.y -= getKeyboardHeight(notification)
         }
         keyboardIsHidden = false
-        keyboardHeight = getKeyboardHeight(notification)
     }
     
     func keyboardWillHide(notification: NSNotification) {
@@ -122,7 +119,6 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
             self.view.frame.origin.y += getKeyboardHeight(notification)
         }
         keyboardIsHidden = true
-        keyboardHeight = 0
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
@@ -134,6 +130,50 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if textField === textLineTop && !topLineEdited {
+            textField.text = ""
+            topLineEdited = true
+        }
+        if textField === textLineBottom && !bottomLineEdited {
+            textField.text = ""
+            bottomLineEdited = true
+        }
+    }
+    
+    // MARK: - Meme Management
+    @IBAction func share() {
+        let memedImage = generateMemedImage()
+        let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+        self.presentViewController(activityView, animated: true, completion: nil)
+        
+        var meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
+    }
+    
+    func generateMemedImage() -> UIImage {
+        navBar.hidden = true
+        toolBar.hidden = true
+        
+        if !topLineEdited {
+            textLineTop.text = ""
+        }
+        if !bottomLineEdited {
+            textLineBottom.text = ""
+        }
+        
+        UIGraphicsBeginImageContext(self.memeView.frame.size)
+        self.memeView.drawViewHierarchyInRect(self.memeView.frame, afterScreenUpdates: true)
+        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        navBar.hidden = false
+        toolBar.hidden = false
+        return memedImage
     }
 }
 
