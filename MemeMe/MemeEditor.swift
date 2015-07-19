@@ -13,6 +13,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var memeView: UIView!
     @IBOutlet weak var textLineTop: MemeLineLabel!
     @IBOutlet weak var textLineBottom: MemeLineLabel!
@@ -22,6 +23,9 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     var topLineEdited = false
     var bottomLineEdited = false
     var keyboardIsHidden = true
+
+    var editMode = false
+    var meme: Meme!
     
     // MARK: - UIViewController
     override func viewDidLoad() {
@@ -36,8 +40,20 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     override func viewWillAppear(animated: Bool) {
+        if editMode {
+            setUpEditMode()
+        }
         self.subscribeToKeyboardNotifications()
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+    }
+    
+    func setUpEditMode() {
+        cancelButton?.enabled = false
+        shareButton?.enabled = true
+        imagePickerView?.image = meme.image
+        imagePickerView?.contentMode = .ScaleAspectFit
+        textLineTop?.text = meme.textLine1
+        textLineBottom?.text = meme.textLine2
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -50,7 +66,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
 
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -149,7 +165,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
         self.presentViewController(activityView, animated: true, completion: nil)
         
-        var meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
+        meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
@@ -167,7 +183,10 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
         
         UIGraphicsBeginImageContext(self.memeView.frame.size)
-        self.memeView.drawViewHierarchyInRect(self.memeView.frame, afterScreenUpdates: true)
+        print(self.memeView.frame)
+        let frame = self.memeView.frame
+        let rect = CGRectMake(0, 0, frame.width, frame.height)
+        self.view.drawViewHierarchyInRect(rect, afterScreenUpdates: true)
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         

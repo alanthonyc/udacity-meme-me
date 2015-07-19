@@ -72,6 +72,13 @@ class SentMemesCollectionViewController: UICollectionViewController, UICollectio
     }
 
     // MARK: UICollectionViewDelegate
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "memeDetailSegueFromCollectionViewItem" {
+            return false
+        }
+        return true
+    }
 
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
