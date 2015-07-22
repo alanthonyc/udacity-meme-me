@@ -16,13 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var memes = [Meme]()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        let image = UIImage(named: "LaunchImage.png", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil) as UIImage!
-        let image2 = UIImage(named: "table@3x.png", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil) as UIImage!
-        let meme = Meme(textLine1: "first meme", textLine2: "plus", image: image, memedImage: image)
-        memes.append(meme)
-        let meme2 = Meme(textLine1: "second meme", textLine2: "another", image: image2, memedImage: image2)
-        memes.append(meme2)
         return true
     }
 

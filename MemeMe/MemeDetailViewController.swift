@@ -14,6 +14,7 @@ class MemeDetailViewController: UIViewController, MemeEditorDelegate {
     var meme: Meme!
     var memeIndex: Int!
 
+    // MARK: View Controller
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -26,16 +27,7 @@ class MemeDetailViewController: UIViewController, MemeEditorDelegate {
         memeImageView.image = meme.memedImage
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
+    // MARK: - Meme Editing Functions
     @IBAction func deleteMeme() {
         let appD = UIApplication.sharedApplication().delegate as! AppDelegate
         appD.memes.removeAtIndex(memeIndex)
@@ -50,6 +42,7 @@ class MemeDetailViewController: UIViewController, MemeEditorDelegate {
         self.navigationController?.pushViewController(editMemeViewController, animated: true)
     }
     
+    // MARK: - Meme Editor Delegate
     func finishEditingMeme(line1: String, line2: String, memeImage: UIImage, editedImage: UIImage) {
         meme.textLine1 = line1
         meme.textLine2 = line2

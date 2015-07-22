@@ -13,6 +13,7 @@ class SentMemesTableViewController: UITableViewController, UITableViewDataSource
     var memes: [Meme]!
     var appDelegate: AppDelegate!
 
+    // MARK: - View Controller
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self

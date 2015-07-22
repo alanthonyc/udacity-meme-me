@@ -16,6 +16,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
 
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var albumButton: UIButton!
     @IBOutlet weak var memeView: UIView!
     @IBOutlet weak var textLineTop: MemeLineLabel!
     @IBOutlet weak var textLineBottom: MemeLineLabel!
@@ -45,11 +46,12 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     override func viewWillAppear(animated: Bool) {
+        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         if editMode {
             setUpEditMode()
         }
         self.subscribeToKeyboardNotifications()
-        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+
     }
     
     func setUpEditMode() {
@@ -63,6 +65,8 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         topLineEdited = true
         bottomLineEdited = true
         memedImage = meme.memedImage
+        cameraButton.enabled = false
+        albumButton.enabled = false
     }
     
     override func viewWillDisappear(animated: Bool) {

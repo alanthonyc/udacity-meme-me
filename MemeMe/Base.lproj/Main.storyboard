@@ -186,7 +186,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom line" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="9Wm-f1-6je" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom line" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="9Wm-f1-6je" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
                                             <rect key="frame" x="28" y="78" width="77" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
@@ -404,6 +404,7 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="albumButton" destination="G09-ZD-DKP" id="Fbl-kz-ryO"/>
                         <outlet property="cameraButton" destination="gpx-41-UV9" id="4Lj-fj-MbY"/>
                         <outlet property="imagePickerView" destination="f6Z-Ld-i8g" id="4yu-fw-dEp"/>
                         <outlet property="memeView" destination="wXp-7x-dxk" id="lV2-4y-L5l"/>
@@ -423,6 +424,6 @@
         <image name="table.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KPs-13-eor"/>
+        <segue reference="dpa-B7-2FS"/>
     </inferredMetricsTieBreakers>
 </document>
