@@ -336,8 +336,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wXp-7x-dxk" userLabel="MemeView">
                                 <rect key="frame" x="28" y="44" width="544" height="447"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f6Z-Ld-i8g">
-                                        <rect key="frame" x="0.0" y="0.0" width="544" height="403"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f6Z-Ld-i8g">
+                                        <rect key="frame" x="0.0" y="0.0" width="544" height="447"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="pTJ-oH-5HE"/>
                                         </constraints>
