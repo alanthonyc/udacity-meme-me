@@ -18,6 +18,7 @@ class SentMemesTableViewController: UITableViewController, UITableViewDataSource
         self.tableView.delegate = self
         self.tableView.dataSource = self
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(animated: Bool) {

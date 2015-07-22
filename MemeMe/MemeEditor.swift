@@ -12,13 +12,10 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
 
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var shareButton: UIBarButtonItem!
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var memeView: UIView!
     @IBOutlet weak var textLineTop: MemeLineLabel!
     @IBOutlet weak var textLineBottom: MemeLineLabel!
     @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var navBar: UINavigationBar!
     
     var topLineEdited = false
     var bottomLineEdited = false
@@ -36,7 +33,9 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         textLineBottom.delegate = self
         textLineTop.hidden = true
         textLineBottom.hidden = true
-        shareButton.enabled = false
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "share")
+        self.navigationItem.rightBarButtonItem?.enabled = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -48,8 +47,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     func setUpEditMode() {
-        cancelButton?.enabled = false
-        shareButton?.enabled = true
+        self.navigationItem.rightBarButtonItem?.enabled = true
         imagePickerView?.image = meme.image
         imagePickerView?.contentMode = .ScaleAspectFit
         textLineTop?.text = meme.textLine1
@@ -75,10 +73,6 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     // MARK: - Picker View
-    @IBAction func dismissEditor(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-
     @IBAction func displayImagePicker() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
@@ -104,7 +98,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         textLineBottom.hidden = false
         topLineEdited = false
         bottomLineEdited = false
-        shareButton.enabled = true
+        self.navigationItem.rightBarButtonItem?.enabled = true
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -160,7 +154,11 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     // MARK: - Meme Management
-    @IBAction func share() {
+    func clearCurrentMeme() {
+        imagePickerView.image = nil
+    }
+    
+    func share() {
         let memedImage = generateMemedImage()
         let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
         self.presentViewController(activityView, animated: true, completion: nil)
@@ -172,9 +170,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     func generateMemedImage() -> UIImage {
-        navBar.hidden = true
         toolBar.hidden = true
-        
         if !topLineEdited {
             textLineTop.text = ""
         }
@@ -190,7 +186,6 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        navBar.hidden = false
         toolBar.hidden = false
         return memedImage
     }
