@@ -178,8 +178,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Csg-FA-3vu">
                                             <rect key="frame" x="8" y="8" width="117" height="99"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="99" id="OE5-Be-Ytv"/>
-                                                <constraint firstAttribute="width" constant="117" id="Yfe-4h-pbv"/>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="117" id="Yfe-4h-pbv"/>
                                             </constraints>
                                         </imageView>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="top line" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Gr2-m0-PIA" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
@@ -285,7 +284,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yiZ-um-mbv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1180" y="816"/>
+            <point key="canvasLocation" x="1180" y="710"/>
         </scene>
         <!--Meme Editor-->
         <scene sceneID="6uy-4i-lx9">
@@ -338,22 +337,14 @@
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f6Z-Ld-i8g">
                                         <rect key="frame" x="0.0" y="0.0" width="544" height="447"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="pTJ-oH-5HE"/>
-                                        </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="pTJ-oH-5HE"/>
-                                            </mask>
-                                        </variation>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="top" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MHA-tv-mCY" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="74" width="520" height="48"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="top" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MHA-tv-mCY" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
+                                        <rect key="frame" x="12" y="50" width="520" height="48"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="40"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" enablesReturnKeyAutomatically="YES"/>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ViH-Xv-fnY" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="374" width="520" height="48"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ViH-Xv-fnY" customClass="MemeLineLabel" customModule="MemeMe" customModuleProvider="target">
+                                        <rect key="frame" x="12" y="350" width="520" height="48"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="40"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" enablesReturnKeyAutomatically="YES"/>
                                     </textField>

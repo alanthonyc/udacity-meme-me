@@ -74,13 +74,22 @@ class SentMemesCollectionViewController: UICollectionViewController, UICollectio
 
     // MARK: UICollectionViewDelegate
     
-    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
-        if identifier == "memeDetailSegueFromCollectionViewItem" {
-            return false
-        }
-        return true
-    }
+//    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+//        if identifier == "memeDetailSegueFromCollectionViewItem" {
+//            return false
+//        }
+//        return true
+//    }
 
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let meme = self.memes[indexPath.row]
+        if let memeDetailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("memeDetailVC") as? MemeDetailViewController {
+            memeDetailViewController.meme = meme
+            memeDetailViewController.memeIndex = indexPath.row
+            self.navigationController?.pushViewController(memeDetailViewController, animated: true)
+        }
+    }
+    
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
