@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol MemeEditorDelegate {
+    func finishEditingMeme(line1: String, line2: String, memeImage: UIImage, editedImage: UIImage)
+}
+
 class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -23,6 +27,8 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
 
     var editMode = false
     var meme: Meme!
+    var delegate: MemeEditorDelegate!
+    var memedImage: UIImage!
     
     // MARK: - UIViewController
     override func viewDidLoad() {
@@ -52,10 +58,20 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         imagePickerView?.contentMode = .ScaleAspectFit
         textLineTop?.text = meme.textLine1
         textLineBottom?.text = meme.textLine2
+        textLineTop.hidden = false
+        textLineBottom.hidden = false
+        topLineEdited = true
+        bottomLineEdited = true
+        memedImage = meme.memedImage
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        if self.isMovingFromParentViewController() {
+            if delegate != nil {
+                self.delegate.finishEditingMeme(textLineTop.text, line2: textLineBottom.text, memeImage: meme.image, editedImage: memedImage)
+            }
+        }
         self.unsubscribeFromKeyboardNotifications()
     }
 
@@ -72,37 +88,37 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         // Pass the selected object to the new view controller.
     }
     
-    // MARK: - Picker View
-    @IBAction func displayImagePicker() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = .PhotoLibrary
-        self.presentViewController(imagePickerController, animated: true, completion: nil)
-    }
-    
-    @IBAction func displayCameraImagePicker() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = .Camera
-        self.presentViewController(imagePickerController, animated: true, completion: nil)
-    }
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        
-        if let image = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            self.imagePickerView.image = image
-            self.imagePickerView.contentMode = .ScaleAspectFit
+    // MARK: - Meme Management
+    func share() {
+        memedImage = generateMemedImage()
+        let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+        self.presentViewController(activityView, animated: true, completion: nil)
+        if !editMode {
+            meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
+            let object = UIApplication.sharedApplication().delegate
+            let appDelegate = object as! AppDelegate
+            appDelegate.memes.append(meme)
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
-        textLineTop.hidden = false
-        textLineBottom.hidden = false
-        topLineEdited = false
-        bottomLineEdited = false
-        self.navigationItem.rightBarButtonItem?.enabled = true
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func generateMemedImage() -> UIImage {
+        toolBar.hidden = true
+        if !topLineEdited {
+            textLineTop.text = ""
+        }
+        if !bottomLineEdited {
+            textLineBottom.text = ""
+        }
+        
+        UIGraphicsBeginImageContext(self.memeView.frame.size)
+        let frame = self.memeView.frame
+        let rect = CGRectMake(0, 0, frame.width, frame.height)
+        self.view.drawViewHierarchyInRect(rect, afterScreenUpdates: true)
+        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        toolBar.hidden = false
+        return memedImage
     }
     
     // MARK: - Keyboard and View Display Management
@@ -153,41 +169,37 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
-    // MARK: - Meme Management
-    func clearCurrentMeme() {
-        imagePickerView.image = nil
+    // MARK: - Picker View
+    @IBAction func displayImagePicker() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .PhotoLibrary
+        self.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
-    func share() {
-        let memedImage = generateMemedImage()
-        let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
-        self.presentViewController(activityView, animated: true, completion: nil)
-        
-        meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
-        let object = UIApplication.sharedApplication().delegate
-        let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(meme)
+    @IBAction func displayCameraImagePicker() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .Camera
+        self.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
-    func generateMemedImage() -> UIImage {
-        toolBar.hidden = true
-        if !topLineEdited {
-            textLineTop.text = ""
-        }
-        if !bottomLineEdited {
-            textLineBottom.text = ""
-        }
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         
-        UIGraphicsBeginImageContext(self.memeView.frame.size)
-        print(self.memeView.frame)
-        let frame = self.memeView.frame
-        let rect = CGRectMake(0, 0, frame.width, frame.height)
-        self.view.drawViewHierarchyInRect(rect, afterScreenUpdates: true)
-        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        toolBar.hidden = false
-        return memedImage
+        if let image = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            self.imagePickerView.image = image
+            self.imagePickerView.contentMode = .ScaleAspectFit
+        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+        textLineTop.hidden = false
+        textLineBottom.hidden = false
+        topLineEdited = false
+        bottomLineEdited = false
+        self.navigationItem.rightBarButtonItem?.enabled = true
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

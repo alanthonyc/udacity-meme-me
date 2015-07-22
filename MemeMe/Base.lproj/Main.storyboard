@@ -252,7 +252,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7si-jo-wDB"/>
                                     <barButtonItem title="Edit" id="0Xh-xe-XJW">
                                         <connections>
-                                            <segue destination="u6a-k7-Ufw" kind="show" identifier="editDetailSegue" id="Vuv-wh-bF3"/>
+                                            <action selector="editMeme" destination="E5K-Px-ffz" id="xdS-R2-569"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Xuj-ns-ChB"/>
