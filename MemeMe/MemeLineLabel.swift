@@ -9,14 +9,6 @@
 import UIKit
 
 class MemeLineLabel: UITextField {
-
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     func setupView(size:CGFloat) {
         
@@ -26,10 +18,10 @@ class MemeLineLabel: UITextField {
             NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: size)!,
             NSStrokeWidthAttributeName: -3.0
         ]
-        self.defaultTextAttributes = memeTextAttributes
-        self.textAlignment = .Center
-        self.adjustsFontSizeToFitWidth = true
-        self.autocapitalizationType = .AllCharacters
+        defaultTextAttributes = memeTextAttributes
+        textAlignment = .Center
+        adjustsFontSizeToFitWidth = true
+        autocapitalizationType = .AllCharacters
     }
 
 }

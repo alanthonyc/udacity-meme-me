@@ -31,15 +31,15 @@ class MemeDetailViewController: UIViewController, MemeEditorDelegate {
     @IBAction func deleteMeme() {
         let appD = UIApplication.sharedApplication().delegate as! AppDelegate
         appD.memes.removeAtIndex(memeIndex)
-        self.navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewControllerAnimated(true)
     }
 
     @IBAction func editMeme() {
-        let editMemeViewController = self.storyboard?.instantiateViewControllerWithIdentifier("memeEditorVC") as! MemeEditor
+        let editMemeViewController = storyboard?.instantiateViewControllerWithIdentifier("memeEditorVC") as! MemeEditor
         editMemeViewController.meme = meme
         editMemeViewController.editMode = true
         editMemeViewController.delegate = self
-        self.navigationController?.pushViewController(editMemeViewController, animated: true)
+        navigationController?.pushViewController(editMemeViewController, animated: true)
     }
     
     // MARK: - Meme Editor Delegate

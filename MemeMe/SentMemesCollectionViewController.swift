@@ -19,13 +19,13 @@ class SentMemesCollectionViewController: UICollectionViewController, UICollectio
     override func viewDidLoad() {
         super.viewDidLoad()
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         memes = appDelegate.memes
-        self.collectionView?.reloadData()
+        collectionView?.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,11 +55,11 @@ class SentMemesCollectionViewController: UICollectionViewController, UICollectio
 
     // MARK: - UICollectionViewDelegate
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let meme = self.memes[indexPath.row]
-        if let memeDetailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("memeDetailVC") as? MemeDetailViewController {
+        let meme = memes[indexPath.row]
+        if let memeDetailViewController = storyboard?.instantiateViewControllerWithIdentifier("memeDetailVC") as? MemeDetailViewController {
             memeDetailViewController.meme = meme
             memeDetailViewController.memeIndex = indexPath.row
-            self.navigationController?.pushViewController(memeDetailViewController, animated: true)
+            navigationController?.pushViewController(memeDetailViewController, animated: true)
         }
     }
 }

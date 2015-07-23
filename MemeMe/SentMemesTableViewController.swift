@@ -16,16 +16,16 @@ class SentMemesTableViewController: UITableViewController, UITableViewDataSource
     // MARK: - View Controller
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        self.tableView.reloadData()
-        self.tableView.rowHeight = 100
+        tableView.reloadData()
+        tableView.rowHeight = 100
 
         memes = appDelegate.memes
     }
@@ -46,7 +46,7 @@ class SentMemesTableViewController: UITableViewController, UITableViewDataSource
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("memeCell", forIndexPath: indexPath) as! MemeTableViewCell
 
-        let meme = self.memes[indexPath.row]
+        let meme = memes[indexPath.row]
         
         cell.memeTopLineTextLabel?.text = meme.textLine1
         cell.memeBottomLineTextLabel?.text = meme.textLine2
@@ -60,11 +60,11 @@ class SentMemesTableViewController: UITableViewController, UITableViewDataSource
 
     // MARK: - TableView Delegate
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let meme = self.memes[indexPath.row]
-        if let memeDetailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("memeDetailVC") as? MemeDetailViewController {
+        let meme = memes[indexPath.row]
+        if let memeDetailViewController = storyboard?.instantiateViewControllerWithIdentifier("memeDetailVC") as? MemeDetailViewController {
             memeDetailViewController.meme = meme
             memeDetailViewController.memeIndex = indexPath.row
-            self.navigationController?.pushViewController(memeDetailViewController, animated: true)
+            navigationController?.pushViewController(memeDetailViewController, animated: true)
         }
     }
 }

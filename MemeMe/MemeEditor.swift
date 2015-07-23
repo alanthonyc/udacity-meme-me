@@ -41,8 +41,8 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         textLineTop.hidden = true
         textLineBottom.hidden = true
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "share")
-        self.navigationItem.rightBarButtonItem?.enabled = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "share")
+        navigationItem.rightBarButtonItem?.enabled = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -50,12 +50,12 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         if editMode {
             setUpEditMode()
         }
-        self.subscribeToKeyboardNotifications()
+        subscribeToKeyboardNotifications()
 
     }
     
     func setUpEditMode() {
-        self.navigationItem.rightBarButtonItem?.enabled = true
+        navigationItem.rightBarButtonItem?.enabled = true
         imagePickerView?.image = meme.image
         imagePickerView?.contentMode = .ScaleAspectFit
         textLineTop?.text = meme.textLine1
@@ -71,12 +71,12 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        if self.isMovingFromParentViewController() {
+        if isMovingFromParentViewController() {
             if delegate != nil {
-                self.delegate.finishEditingMeme(textLineTop.text, line2: textLineBottom.text, memeImage: meme.image, editedImage: memedImage)
+                delegate.finishEditingMeme(textLineTop.text, line2: textLineBottom.text, memeImage: meme.image, editedImage: memedImage)
             }
         }
-        self.unsubscribeFromKeyboardNotifications()
+        unsubscribeFromKeyboardNotifications()
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,9 +91,9 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     func share() {
         memedImage = generateMemedImage()
         let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
-        self.presentViewController(activityView, animated: true, completion: nil)
+        presentViewController(activityView, animated: true, completion: nil)
         if !editMode {
-            meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
+            meme = Meme(topLine: textLineTop.text, bottomLine: textLineBottom.text, baseImage: imagePickerView.image, memeImage: memedImage)
             let object = UIApplication.sharedApplication().delegate
             let appDelegate = object as! AppDelegate
             appDelegate.memes.append(meme)
@@ -109,10 +109,10 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
             textLineBottom.text = ""
         }
         
-        UIGraphicsBeginImageContext(self.memeView.frame.size)
-        let frame = self.memeView.frame
+        UIGraphicsBeginImageContext(memeView.frame.size)
+        let frame = memeView.frame
         let rect = CGRectMake(0, 0, frame.width, frame.height)
-        self.view.drawViewHierarchyInRect(rect, afterScreenUpdates: true)
+        view.drawViewHierarchyInRect(rect, afterScreenUpdates: true)
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
@@ -134,14 +134,14 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     func keyboardWillShow(notification: NSNotification) {
         if keyboardIsHidden && textLineBottom.isFirstResponder() {
-            self.view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y -= getKeyboardHeight(notification)
         }
         keyboardIsHidden = false
     }
     
     func keyboardWillHide(notification: NSNotification) {
         if !keyboardIsHidden && textLineBottom.isFirstResponder() {
-            self.view.frame.origin.y += getKeyboardHeight(notification)
+            view.frame.origin.y += getKeyboardHeight(notification)
         }
         keyboardIsHidden = true
     }
@@ -153,7 +153,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        view.endEditing(true)
         return false
     }
     
@@ -173,32 +173,32 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .PhotoLibrary
-        self.presentViewController(imagePickerController, animated: true, completion: nil)
+        presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
     @IBAction func displayCameraImagePicker() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .Camera
-        self.presentViewController(imagePickerController, animated: true, completion: nil)
+        presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         
         if let image = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            self.imagePickerView.image = image
-            self.imagePickerView.contentMode = .ScaleAspectFit
+            imagePickerView.image = image
+            imagePickerView.contentMode = .ScaleAspectFit
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
         textLineTop.hidden = false
         textLineBottom.hidden = false
         topLineEdited = false
         bottomLineEdited = false
-        self.navigationItem.rightBarButtonItem?.enabled = true
+        navigationItem.rightBarButtonItem?.enabled = true
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
