@@ -12,6 +12,13 @@ protocol MemeEditorDelegate {
     func finishEditingMeme(line1: String, line2: String, memeImage: UIImage, editedImage: UIImage)
 }
 
+struct Meme {
+    var textLine1: String!
+    var textLine2: String!
+    var image: UIImage!
+    var memedImage: UIImage!
+}
+
 class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -93,7 +100,7 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
         presentViewController(activityView, animated: true, completion: nil)
         if !editMode {
-            meme = Meme(topLine: textLineTop.text, bottomLine: textLineBottom.text, baseImage: imagePickerView.image, memeImage: memedImage)
+            meme = Meme(textLine1: textLineTop.text, textLine2: textLineBottom.text, image: imagePickerView.image, memedImage: memedImage)
             let object = UIApplication.sharedApplication().delegate
             let appDelegate = object as! AppDelegate
             appDelegate.memes.append(meme)
