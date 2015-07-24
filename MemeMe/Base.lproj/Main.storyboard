@@ -246,7 +246,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aX0-xw-j5n">
-                                <rect key="frame" x="0.0" y="506" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7si-jo-wDB"/>
                                     <barButtonItem title="Edit" id="0Xh-xe-XJW">
@@ -264,22 +264,33 @@
                                 </items>
                             </toolbar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="rWy-Ja-AHe">
-                                <rect key="frame" x="24" y="20" width="552" height="468"/>
+                                <rect key="frame" x="24" y="20" width="552" height="2048"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="aX0-xw-j5n" firstAttribute="top" secondItem="rWy-Ja-AHe" secondAttribute="bottom" constant="18" id="BdQ-X2-eSl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aX0-xw-j5n" secondAttribute="trailing" constant="-16" id="G3Q-1w-vUC"/>
                             <constraint firstAttribute="bottomMargin" secondItem="aX0-xw-j5n" secondAttribute="bottom" constant="50" id="Nt2-1Y-EPl"/>
+                            <constraint firstItem="noc-V6-zNY" firstAttribute="top" secondItem="aX0-xw-j5n" secondAttribute="bottom" id="R1s-4u-7Oh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="rWy-Ja-AHe" secondAttribute="trailing" constant="8" id="Swa-Ye-zdz"/>
+                            <constraint firstItem="aX0-xw-j5n" firstAttribute="top" secondItem="rWy-Ja-AHe" secondAttribute="bottom" id="XwQ-7M-mvK"/>
                             <constraint firstItem="noc-V6-zNY" firstAttribute="top" secondItem="rWy-Ja-AHe" secondAttribute="bottom" constant="112" id="bFg-nt-rb9"/>
                             <constraint firstItem="rWy-Ja-AHe" firstAttribute="top" secondItem="pDg-FB-B1f" secondAttribute="bottom" id="bPx-Bs-nK9"/>
                             <constraint firstItem="aX0-xw-j5n" firstAttribute="leading" secondItem="hcn-yt-eCs" secondAttribute="leadingMargin" constant="-16" id="jbX-8c-jep"/>
                             <constraint firstItem="rWy-Ja-AHe" firstAttribute="leading" secondItem="hcn-yt-eCs" secondAttribute="leadingMargin" constant="8" id="zkq-w0-Sbl"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="BdQ-X2-eSl"/>
+                                <exclude reference="Nt2-1Y-EPl"/>
+                                <exclude reference="XwQ-7M-mvK"/>
+                                <exclude reference="bFg-nt-rb9"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="memeImageView" destination="rWy-Ja-AHe" id="xwL-7z-VJL"/>
+                        <outlet property="detailMemeImageView" destination="rWy-Ja-AHe" id="35Q-if-mGz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yiZ-um-mbv" userLabel="First Responder" sceneMemberID="firstResponder"/>

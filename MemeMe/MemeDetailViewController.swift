@@ -10,7 +10,7 @@ import UIKit
 
 class MemeDetailViewController: UIViewController, MemeEditorDelegate {
     
-    @IBOutlet weak var memeImageView: UIImageView!
+    @IBOutlet weak var detailMemeImageView: UIImageView!
     var meme: Meme!
     var memeIndex: Int!
 
@@ -24,7 +24,7 @@ class MemeDetailViewController: UIViewController, MemeEditorDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        memeImageView.image = meme.memedImage
+        detailMemeImageView.image = meme.memedImage
     }
     
     // MARK: - Meme Editing Functions
@@ -46,12 +46,12 @@ class MemeDetailViewController: UIViewController, MemeEditorDelegate {
     func finishEditingMeme(line1: String, line2: String, memeImage: UIImage, editedImage: UIImage) {
         meme.textLine1 = line1
         meme.textLine2 = line2
+        meme.memedImage = editedImage
         let appD = UIApplication.sharedApplication().delegate as! AppDelegate
         appD.memes[memeIndex].textLine1 = line1
         appD.memes[memeIndex].textLine2 = line2
         appD.memes[memeIndex].memedImage = editedImage
         appD.memes[memeIndex].image = memeImage
-        memeImageView.image = editedImage
     }
 }
 
