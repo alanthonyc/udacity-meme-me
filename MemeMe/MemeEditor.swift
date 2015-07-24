@@ -92,11 +92,15 @@ class MemeEditor: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         memedImage = generateMemedImage()
         let activityView : UIActivityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
         presentViewController(activityView, animated: true, completion: nil)
-        if !editMode {
-            meme = Meme(topLine: textLineTop.text, bottomLine: textLineBottom.text, baseImage: imagePickerView.image, memeImage: memedImage)
-            let object = UIApplication.sharedApplication().delegate
-            let appDelegate = object as! AppDelegate
-            appDelegate.memes.append(meme)
+        activityView.completionWithItemsHandler = { activity, success, items, error in
+            if success {
+                if !self.editMode {
+                    self.meme = Meme(topLine: self.textLineTop.text, bottomLine: self.textLineBottom.text, baseImage: self.imagePickerView.image, memeImage: self.memedImage)
+                    let object = UIApplication.sharedApplication().delegate
+                    let appDelegate = object as! AppDelegate
+                    appDelegate.memes.append(self.meme)
+                }
+            }
         }
     }
     
